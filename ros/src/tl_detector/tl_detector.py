@@ -82,6 +82,9 @@ class TLDetector(object):
         self.pose = msg.pose
 
     def waypoints_cb(self, waypoints):
+        # work around not being able to modify launch files for Carla
+        if len(waypoints.waypoints) < 200:
+            waypoints.waypoints.reverse()
         self.waypoints = waypoints.waypoints
         self.waypoint_loookahead = min(LOOKAHEAD_WPS, len(waypoints.waypoints) - 1)
         rospy.loginfo("waypoints_cb: received %s base waypoints setting lookahead to %s", len(waypoints.waypoints), self.waypoint_loookahead)

@@ -154,6 +154,9 @@ class WaypointUpdater(object):
         pass
 
     def waypoints_cb(self, waypoints):
+        # work around not being able to modify launch files for Carla
+        if len(waypoints.waypoints) < 200:
+            waypoints.waypoints.reverse()
         self.base_waypoints = waypoints.waypoints
         self.waypoints = deepcopy(self.base_waypoints)
         self.waypoint_loookahead = min(LOOKAHEAD_WPS, len(waypoints.waypoints) - 1)
